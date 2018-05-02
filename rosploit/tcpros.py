@@ -23,7 +23,8 @@ class TCPROS:
         self.items = items
 
     @classmethod
-    def subscriber(cls, message_definition, caller_id, topic, md5sum, message_type, tcp_nodelay='0', error="", data=""):
+    def subscriber(cls, message_definition: str, caller_id: str, topic: str, md5sum: str, message_type: str,
+                   tcp_nodelay='0', error="", data=""):
         cls.message_definition = message_definition
         cls.caller_id = caller_id
         cls.topic = topic
@@ -39,8 +40,8 @@ class TCPROS:
                    error=cls.error, data=cls.data, items=cls.items)
 
     @classmethod
-    def publisher(cls, message_definition, topic, md5sum, message_type, caller_id="", latching="0", error="",
-                  data=""):
+    def publisher(cls, message_definition: str, topic: str, md5sum: str, message_type: str,
+                  caller_id="", latching="0", error="", data=""):
         cls.message_definition = message_definition
         cls.topic = topic
         cls.md5sum = md5sum
@@ -70,10 +71,10 @@ class TCPROS:
                    persistent=cls.persistent, error=cls.error, data=cls.data, items=cls.items)
 
     @classmethod
-    def service(cls, caller_id, error="", data=""):
+    def service(cls, caller_id: str, error="", data=""):
         cls.caller_id = caller_id
         cls.error = error
-        cls.data = ""
+        cls.data = data
         cls.items = {'caller_id': caller_id}
         return cls(connection_type="service", caller_id=cls.caller_id, error=cls.error, data=cls.data, items=cls.items)
 
