@@ -5,8 +5,8 @@ import struct
 
 class TCPROS:
     def __init__(self, connection_type="", message_definition="", caller_id="", service="", md5sum="", message_type="",
-                 tcp_nodelay=False,
-                 latching=False, persistent=False, error=""):
+                 tcp_nodelay="0", topic="",
+                 latching="0", persistent="0", error="", data="", items=None):
         self.connection_type = connection_type
         self.message_definition = message_definition
         self.caller_id = caller_id
@@ -17,10 +17,13 @@ class TCPROS:
         self.latching = latching
         self.persistent = persistent
         self.error = error
+        self.topic = topic
         self.header = None
+        self.data = data
+        self.items = items
 
     @classmethod
-    def subscriber(cls, message_definition, caller_id, topic, md5sum, message_type, tcp_nodelay='0', error=""):
+    def subscriber(cls, message_definition, caller_id, topic, md5sum, message_type, tcp_nodelay='0', error="", data=""):
         cls.message_definition = message_definition
         cls.caller_id = caller_id
         cls.topic = topic
@@ -28,38 +31,51 @@ class TCPROS:
         cls.message_type = message_type
         cls.tcp_nodelay = tcp_nodelay
         cls.error = error
-        cls.items = {'message_definition': message_definition, 'caller_id': caller_id, "topic": topic, "md5sum": md5sum,
+        cls.data = data
+        cls.items = {'message_definition': message_definition, 'caller_id': caller_id, 'topic': topic, 'md5sum': md5sum,
                      'message_type': message_type, 'tcp_nodelay': tcp_nodelay}
         return cls(connection_type="subscription", message_definition=cls.message_definition, caller_id=cls.caller_id,
                    topic=cls.topic, md5sum=cls.md5sum, message_type=cls.message_type, tcp_nodelay=cls.tcp_nodelay,
-                   error=cls.error)
+                   error=cls.error, data=cls.data, items=cls.items)
 
     @classmethod
-    def publisher(cls, md5sum, message_type, caller_id="", latching=False, error=""):
+    def publisher(cls, message_definition, topic, md5sum, message_type, caller_id="", latching="0", error="",
+                  data=""):
+        cls.message_definition = message_definition
+        cls.topic = topic
         cls.md5sum = md5sum
         cls.message_type = message_type
         cls.caller_id = caller_id
         cls.latching = latching
         cls.error = error
-        return cls(connection_type="publisher", md5sum=cls.md5sum, type=cls.type,
-                   caller_id=cls.caller_id, latching=cls.latching, error=cls.error)
+        cls.data = data
+        cls.items = {'message_definition': message_definition, 'caller_id': caller_id, 'md5sum': md5sum,
+                     'message_type': message_type, 'latching': latching}
+        return cls(message_definition=cls.message_definition, topic=cls.topic, connection_type="publisher",
+                   md5sum=cls.md5sum,
+                   caller_id=cls.caller_id, latching=cls.latching, error=cls.error, data=cls.data, items=cls.items)
 
     @classmethod
-    def client(cls, caller_id, service, md5sum, message_type, persistent=False, error=""):
+    def client(cls, caller_id: str, service: str, md5sum: str, message_type: str, persistent="0", error="", data=""):
         cls.caller_id = caller_id
         cls.service = service
         cls.md5sum = md5sum
         cls.message_type = message_type
         cls.persistent = persistent
         cls.error = error
+        cls.data = data
+        cls.items = {'caller_id': caller_id, 'service': service, 'md5sum': md5sum, 'message_type': message_type,
+                     'persistent': persistent}
         return cls(connection_type="client", caller_id=cls.caller_id, service=cls.service, md5sum=cls.md5sum,
-                   type=cls.message_type, persistent=cls.persistent, error=cls.error)
+                   persistent=cls.persistent, error=cls.error, data=cls.data, items=cls.items)
 
     @classmethod
-    def service(cls, caller_id, error=""):
+    def service(cls, caller_id, error="", data=""):
         cls.caller_id = caller_id
         cls.error = error
-        return cls(connection_type="service", caller_id=cls.caller_id, error=cls.error)
+        cls.data = ""
+        cls.items = {'caller_id': caller_id}
+        return cls(connection_type="service", caller_id=cls.caller_id, error=cls.error, data=cls.data, items=cls.items)
 
     def create_header(self):
         str_cls = str
@@ -68,7 +84,8 @@ class TCPROS:
         # TODO: Cleanup
         # encode all unicode keys in the header. Ideally, the type of these would be specified by the api
         encoded_header = {}
-        for k, v in self.items():
+        # TODO: Bad names
+        for k, v in self.items.items():
             if isinstance(k, str_cls):
                 k = k.encode('utf-8')
             if isinstance(v, str_cls):
