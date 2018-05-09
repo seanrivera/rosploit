@@ -1,17 +1,18 @@
 #!/usr/bin/python3
 import argparse
-
 import xmlrpc.client
 
+from rosploit.node import Node
 
-def probe_node(address, port):
+
+def probe_node(node: Node):
     """
         This is an information gathering function. It calls the getBusInfo function and parses all the info into a more usable form 
     """
 
     ID = '/rosnode'
     topicList = []
-    with xmlrpc.client.ServerProxy("http://" + address + ":" + port) as proxy:
+    with xmlrpc.client.ServerProxy("http://" + node.ip_addrs + ":" + node.port) as proxy:
         topicInfo = proxy.getBusInfo(ID)
         nodeName = proxy.getName(ID)
         if topicInfo[0] == 1 and nodeName[0] == 1:
@@ -32,5 +33,6 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--address', help="Address of the ROS node you want info on", required=True)
     parser.add_argument('-p', '--port', help="Port of the ROS node you want info on", required=True)
     args = parser.parse_args()
-    nodeInfo = probe_node(args.address, args.port)
+    cur_node = Node(ip_addr=args.address, port=args.port)
+    nodeInfo = probe_node(cur_node)
     print(nodeInfo)

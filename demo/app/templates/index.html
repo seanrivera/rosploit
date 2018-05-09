@@ -1,10 +1,43 @@
 <!-- index.html-->
 
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="jumbotron">
-    <h1>Flask Is Awesome</h1>
-    <p class="lead">And I'm glad to be learning so much about it!</p>
-</div>
+    {% if ip %}
+        <h1>Current IP Address: </h1>
+        {% for ip_addr in ip %}
+            <p>Interface: {{ ip_addr['iface'] }} IP address: {{ ip_addr['addr'] }} Subnet: {{ ip_addr['subnet'] }}</p>
+        {% endfor %}
+    {% else %}
+        <h1>Could not get IP information! Scan may not work</h1>
+    {% endif %}
+    {% from "_formhelpers.html" import render_field %}
+    <form method=post>
+        <dl>
+            {{ render_field(form.target) }}
+        </dl>
+        <p><input type=submit value="Scan IP">
+    </form>
+    {% from "_nodehelpers.html" import render_node %}
+    {% if node_list %}
+        <table>
+            <tr>
+                <th>IP address</th>
+                <th>Port</th>
+            </tr>
+            {% for node in node_list %}
+                {{ render_node(node) }}
+            {% endfor %}
+        </table>
+    {% endif %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 {% endblock %}
