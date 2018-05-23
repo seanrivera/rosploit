@@ -2,7 +2,8 @@
 from flask import Flask
 
 # Initialize the app
-demo: Flask = Flask(__name__, instance_relative_config=True, template_folder="app/templates")
+demo: Flask = Flask(__name__, instance_relative_config=True, template_folder="app/templates",
+                    static_folder="app/static")
 
 # Load the views
 from demo.app import views

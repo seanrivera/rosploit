@@ -1,4 +1,5 @@
 # Node class definition for common communication of scripts
+import json
 import socket
 
 
@@ -15,3 +16,13 @@ class Node:
             raise
         self.ip_addr = ip_addr
         self.port = port
+
+    def toJSON(self):
+        return json.dumps({"ip_addr": self.ip_addr, "port": self.port}, sort_keys=True, indent=4)
+
+    @classmethod
+    def fromJSON(cls, o):
+        classdict = json.loads(o)
+        cls.ip_addr = classdict['ip_addr']
+        cls.port = classdict['port']
+        return cls(ip_addr=cls.ip_addr, port=cls.port)
