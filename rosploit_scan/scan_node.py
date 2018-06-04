@@ -52,7 +52,14 @@ def scan_node(ip_addr: str, port_range: str, script_list: List[str]) -> List[Nod
         # TODO: Just the ROS ports
         print(port)
         try:
-            tempnode = Node(ip_addr=ip_addr, port=port)
+            print(nm[ip_addr]['tcp'][port])
+            print(nm[ip_addr]['tcp'][port]['extrainfo'])
+            notes = nm[ip_addr]['tcp'][port]['extrainfo'] + ' '
+            if 'script' in nm[ip_addr]['tcp'][port]:
+                for key, value in nm[ip_addr]['tcp'][port]['script'].items():
+                    notes = notes + key + ":" + value + "\n"
+            tempnode = Node(ip_addr=ip_addr, port=port, notes=notes)
+            print(tempnode.notes)
         except Exception as inst:
             print("Node Creation Exception")
             raise inst

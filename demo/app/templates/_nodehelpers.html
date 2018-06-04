@@ -2,6 +2,7 @@
     <tr>
         <td>{{ node.ip_addr }}</td>
         <td>{{ node.port }}  </td>
+        <td>{{ node.notes }} </td>
         {% for script in scripts %}
             <td>
                 <input type=submit name="action" value={{ script }}>

@@ -31,7 +31,7 @@ def index():
             # TODO Call rosploit_scan script to scan IP address
             ip_addr: str = form.target.data.strip()
             try:
-                temp_list = scan_node.scan_node(ip_addr=ip_addr, port_range='10000-',
+                temp_list = scan_node.scan_node(ip_addr=ip_addr, port_range='1-1000',
                                                 script_list=['ros-node-id.nse', 'ros-master-scan.nse'])
                 node_dict[ip_addr] = [x.toJSON() for x in temp_list]
                 flash('Scanned address ' + ip_addr)
