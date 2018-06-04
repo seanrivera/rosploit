@@ -15,15 +15,11 @@ NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_scan")
 def scan_node(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
     nm = nmap.PortScanner()
     print("Starting scan ip addr " + ip_addr + " ports " + port_range)
-    print(NMAP_DATA_DIR)
     DATA_DIR = NMAP_DATA_DIR.replace("\\", '\\\\')
-    print(DATA_DIR)
     scripts = ""
 
     new_list = [DATA_DIR + "\\\\" + s for s in script_list]
-    print(new_list)
     scripts = ",".join(new_list)
-    print(scripts)
 
     try:
         nm.scan(hosts=ip_addr, ports=port_range, arguments='-sV --script=' + scripts)

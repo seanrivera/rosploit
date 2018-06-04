@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 import argparse
 
+from rosploit.node import Node
 
-def reset_node(address, port):
+
+def reset_node(node: Node):
     print("TODO")
-
+    print(node.port)
+    print(node.ip_addr)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Reset a given ROS node')

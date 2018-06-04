@@ -11,7 +11,7 @@ def kill_node(node: Node):
     """
 
     ID = '/rosnode'
-    with xmlrpc.client.ServerProxy("http://" + node.ip_addr + ":" + node.port) as proxy:
+    with xmlrpc.client.ServerProxy("http://" + node.ip_addr + ":" + str(node.port)) as proxy:
         print("Shutting down node ")
         proxy.shutdown(ID, "")
 
