@@ -81,7 +81,8 @@ class TCPROS:
     def create_header(self):
         str_cls = str
 
-        # encoding code taken from https://github.com/ros/ros_comm/blob/247459207e20c1da109fc306e58b84d15c4107bd/tools/rosgraph/src/rosgraph/network.py
+        # encoding code taken from
+        # https://github.com/ros/ros_comm/blob/247459207e20c1da109fc306e58b84d15c4107bd/tools/rosgraph/src/rosgraph/network.py
         # TODO: Cleanup
         # encode all unicode keys in the header. Ideally, the type of these would be specified by the api
         encoded_header = {}

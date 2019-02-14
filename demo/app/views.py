@@ -10,7 +10,7 @@ import rosploit
 from demo import demo
 from rosploit import node_scripts
 from rosploit.node import Node
-from rosploit_scan import scan_node
+from rosploit_recon import scan_node
 
 
 class ReusableForm(Form):
@@ -28,12 +28,12 @@ def index():
 
     if request.method == 'POST':
         if 'submit' in request.form and form.validate() and form.target.data:
-            # TODO Call rosploit_scan script to scan IP address
+            # TODO Call rosploit_recon script to scan IP address
             ip_addr: str = form.target.data.strip()
             try:
-                temp_list = scan_node.scan_node(ip_addr=ip_addr, port_range='1-1000',
+                temp_list = scan_node.scan_host(ip_addr=ip_addr, port_range='1-1000',
                                                 script_list=['ros-node-id.nse', 'ros-master-scan.nse'])
-                node_dict[ip_addr] = [x.toJSON() for x in temp_list]
+                node_dict[ip_addr] = [x.to_json() for x in temp_list]
                 flash('Scanned address ' + ip_addr)
             except Exception as inst:
                 flash("Failed to scan " + ip_addr + " because " + str(inst))
@@ -44,15 +44,15 @@ def index():
             print(request.form['node'])
             # TODO: this is agressively inefficient
             action = getattr(rosploit, request.form['action'])
-            action_node = Node.fromJSON(request.form['node'])
+            action_node = Node.from_json(request.form['node'])
             result = action(action_node)
             flash(result)
 
     try:
         for item in node_dict.values():
-            node_list.extend([Node.fromJSON(x) for x in item])
+            node_list.extend([Node.from_json(x) for x in item])
     except Exception as inst:
-        flash('Had an exception making the node list! ' + inst)
+        flash('Had an exception making the node list! ' + str(inst))
     scripts = node_scripts
     for iface in ni.interfaces():
         netinfo = ni.ifaddresses(iface)

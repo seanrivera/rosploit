@@ -7,12 +7,12 @@ from demo import demo
 from rosploit.node import Node
 
 # TODO: THIS IS BAD. JUST HERE TO MAKE IT WORK
-NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_scan")
+NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_recon")
 
 
-# NMAP_DATA_DIR = demo.root_path + "\\\\"+".." + "\\\\" + "rosploit_scan"
+# NMAP_DATA_DIR = demo.root_path + "\\\\"+".." + "\\\\" + "rosploit_recon"
 
-def scan_node(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
+def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
     nm = nmap.PortScanner()
     print("Starting scan ip addr " + ip_addr + " ports " + port_range)
     DATA_DIR = NMAP_DATA_DIR.replace("\\", '\\\\')
@@ -68,4 +68,4 @@ def scan_node(ip_addr: str, port_range: str, script_list: List[str]) -> List[Nod
 
 
 if __name__ == "__main__":
-    results = scan_node('127.0.0.1', '1-')
+    results = scan_host('127.0.0.1', '1-', ['ros-master-scan.nse', 'ros-node-id.nse'])

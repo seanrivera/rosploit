@@ -7,24 +7,25 @@ from rosploit.node import Node
 
 def probe_node(node: Node):
     """
-        This is an information gathering function. It calls the getBusInfo function and parses all the info into a more usable form 
+        This is an information gathering function. It calls the getBusInfo function and parses all the info
+         into a more usable form
     """
 
-    ID = '/rosnode'
-    topicList = []
-    with xmlrpc.client.ServerProxy("http://" + node.ip_addrs + ":" + node.port) as proxy:
-        topicInfo = proxy.getBusInfo(ID)
-        nodeName = proxy.getName(ID)
-        if topicInfo[0] == 1 and nodeName[0] == 1:
+    node_id = '/rosnode'
+    topic_list = []
+    with xmlrpc.client.ServerProxy("http://" + node.ip_addr + ":" + node.port) as proxy:
+        topic_info = proxy.getBusInfo(node_id)
+        node_name = proxy.getName(node_id)
+        if topic_info[0] == 1 and node_name[0] == 1:
             print("Successfully got the bus info")
-            print(nodeName[2])
-            for topic in topicInfo[2]:
+            print(node_name[2])
+            for topic in topic_info[2]:
                 print(topic)
-                topicList.append(topic[4])
+                topic_list.append(topic[4])
                 print(topic[4])
-            return (nodeName[2], topicList, topicInfo[2])
+            return node_name[2], topic_list, topic_info[2]
         else:
-            print("Got an error message with the command. " + topicInfo[1] + topicInfo[2])
+            print("Got an error message with the command. " + topic_info[1] + topic_info[2])
 
 
 if __name__ == "__main__":
