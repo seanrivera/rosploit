@@ -2,9 +2,9 @@ import os
 from typing import List
 
 import nmap
-
+from .. import *
 # from demo import demo
-from rosploit.node import Node
+from core.node import Node
 
 # TODO: THIS IS BAD. JUST HERE TO MAKE IT WORK
 # NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_recon")
