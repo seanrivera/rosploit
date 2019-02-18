@@ -3,14 +3,15 @@ from typing import List
 
 import nmap
 
-from demo import demo
+# from demo import demo
 from rosploit.node import Node
 
 # TODO: THIS IS BAD. JUST HERE TO MAKE IT WORK
-NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_recon")
+# NMAP_DATA_DIR = os.path.join(demo.root_path, "..", "rosploit_recon")
 
 
 # NMAP_DATA_DIR = demo.root_path + "\\\\"+".." + "\\\\" + "rosploit_recon"
+NMAP_DATA_DIR = os.getcwd()
 
 def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
     nm = nmap.PortScanner()
