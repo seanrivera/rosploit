@@ -18,7 +18,7 @@ class Node:
         self.ip_addr = ip_addr
         self.port = port
         self.notes = notes
-        self.server = xmlrpc.client.ServerProxy((self.ip_addr, self.port))
+        self.server = xmlrpc.client.ServerProxy("http://" + self.ip_addr+":"+self.port)
         self.pub_topics = []
         self.sub_topics = []
 

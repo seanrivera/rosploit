@@ -101,7 +101,6 @@ local function tcpros(host, port)
 	end
 	catch = function(status, err) 
 		socket:close() 
-		result="TEST"
 	end
 	try = nmap.new_try(catch)
 	try(socket:connect(host, port))
@@ -168,7 +167,7 @@ function action (host, port)
 		else
 			local response=tcpros(host,port)
 			if not response then 
-				return "ROS UNKNOWN PORT" 
+				return "" 
 		  end
 			return response 
 	end 

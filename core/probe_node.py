@@ -2,7 +2,7 @@
 import argparse
 import xmlrpc.client
 
-from rosploit.node import Node
+from core.node import Node
 
 
 def probe_node(node: Node):

@@ -2,7 +2,6 @@ import os
 from typing import List
 
 import nmap
-from .. import *
 # from demo import demo
 from core.node import Node
 
@@ -11,15 +10,14 @@ from core.node import Node
 
 
 # NMAP_DATA_DIR = demo.root_path + "\\\\"+".." + "\\\\" + "rosploit_recon"
-NMAP_DATA_DIR = os.getcwd()
+NMAP_DATA_DIR = os.path.dirname(os.path.realpath(__file__))
 
 def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
     nm = nmap.PortScanner()
     print("Starting scan ip addr " + ip_addr + " ports " + port_range)
     DATA_DIR = NMAP_DATA_DIR.replace("\\", '\\\\')
     scripts = ""
-
-    new_list = [DATA_DIR + "\\\\" + s for s in script_list]
+    new_list = [os.path.join(DATA_DIR, s) for s in script_list]
     scripts = ",".join(new_list)
 
     try:
@@ -44,29 +42,33 @@ def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Nod
         print("Exception type " + str(type(inst)))
         print("Failed to check node info because " + str(inst))
         raise inst
-    print(nm[ip_addr].state())
-    print(nm[ip_addr].all_protocols())
+  #  print(nm[ip_addr].state())
+ #   print(nm[ip_addr].all_protocols())
     node_list = []
     lport = sorted(nm[ip_addr]['tcp'].keys())
-    print(lport)
+#    print(lport)
     for port in lport:
         # TODO: Just the ROS ports
-        print(port)
+       # print(port)
         try:
-            print(nm[ip_addr]['tcp'][port])
-            print(nm[ip_addr]['tcp'][port]['extrainfo'])
+           # print(nm[ip_addr]['tcp'][port])
+           # print(nm[ip_addr]['tcp'][port]['extrainfo'])
             notes = nm[ip_addr]['tcp'][port]['extrainfo'] + ' '
-            if 'script' in nm[ip_addr]['tcp'][port]:
-                for key, value in nm[ip_addr]['tcp'][port]['script'].items():
-                    notes = notes + key + ":" + value + "\n"
-            tempnode = Node(ip_addr=ip_addr, port=port, notes=notes)
-            print(tempnode.notes)
+            if 'script' in nm[ip_addr]['tcp'][port] and 'ros-node-id' in nm[ip_addr]['tcp'][port]['script']:
+                if nm[ip_addr]['tcp'][port]['script']['ros-node-id'] and not "ERROR:" in  nm[ip_addr]['tcp'][port]['script']['ros-node-id']:
+                    for key, value in nm[ip_addr]['tcp'][port]['script'].items():
+                        notes = notes + key + ":" + value + "\n"
+                    tempnode = Node(ip_addr=str(ip_addr), port=str(port), notes=notes)
+                    node_list.append(tempnode)
+                    #print(tempnode.notes)
         except Exception as inst:
             print("Node Creation Exception")
             raise inst
-        node_list.append(tempnode)
     return node_list
 
 
 if __name__ == "__main__":
     results = scan_host('127.0.0.1', '1-', ['ros-master-scan.nse', 'ros-node-id.nse'])
+    for node in results:
+        print(node.port)
+        print(node.notes)
