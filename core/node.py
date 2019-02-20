@@ -37,7 +37,10 @@ class Node:
         return cls(ip_addr=cls.ip_addr, port=cls.port, notes=cls.notes)
 
     def get_pub_list(self, node_name: str):
-        (_, _, topic_list) = self.server.getPublications(node_name)
+        try:
+            (_, _, topic_list) = self.server.getPublications(node_name)
+        except xmlrpc.client.Fault as err:
+            print(err)
         for topic in topic_list:
             message = Message(msg_type=topic_list(1))
             self.pub_topics.append(Topic(topic_name=topic(0), message=message, protocol="TCPROS"))
