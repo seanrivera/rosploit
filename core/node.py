@@ -40,7 +40,7 @@ class Node:
         try:
             (_, _, topic_list) = self.server.getPublications(node_name)
             for topic in topic_list:
-                message = Message(msg_type=topic_list(1))
-                self.pub_topics.append(Topic(topic_name=topic(0), message=message, protocol="TCPROS"))
+                message = Message(msg_type=topic_list[1])
+                self.pub_topics.append(Topic(topic_name=topic[0], message=message, protocol="TCPROS"))
         except xmlrpc.client.Fault as err:
             print(err)
