@@ -6,11 +6,10 @@ from typing import List
 from flask import render_template, flash, session, request
 from wtforms import Form, StringField, validators
 
-import rosploit
+from core import node_scripts
+from core.node import Node
 from demo import demo
-from rosploit import node_scripts
-from rosploit.node import Node
-from rosploit_recon import scan_node
+from recon import scan_node
 
 
 class ReusableForm(Form):

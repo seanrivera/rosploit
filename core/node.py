@@ -3,6 +3,9 @@ import json
 import socket
 import xmlrpc.client
 
+from core.message import Message
+from core.topic import Topic
+
 
 class Node:
     """
@@ -18,7 +21,7 @@ class Node:
         self.ip_addr = ip_addr
         self.port = port
         self.notes = notes
-        self.server = xmlrpc.client.ServerProxy("http://" + self.ip_addr+":"+self.port)
+        self.server = xmlrpc.client.ServerProxy("http://" + self.ip_addr + ":" + self.port)
         self.pub_topics = []
         self.sub_topics = []
 
@@ -32,3 +35,9 @@ class Node:
         cls.port = classdict['port']
         cls.notes = classdict['notes']
         return cls(ip_addr=cls.ip_addr, port=cls.port, notes=cls.notes)
+
+    def get_pub_list(self, node_name: str):
+        (_, _, topic_list) = self.server.getPublications(node_name)
+        for topic in topic_list:
+            message = Message(msg_type=topic_list(1))
+            self.pub_topics.append(Topic(topic_name=topic(0), message=message, protocol="TCPROS"))

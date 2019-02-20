@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 # TODO: Import names are screwy
-from rosploit.tcpros import TCPROS
+from core.tcpros import TCPROS
 
 
 class TestTCPROS(TestCase):
