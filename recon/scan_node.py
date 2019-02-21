@@ -76,6 +76,7 @@ if __name__ == "__main__":
     for node in results:
         print(node.port)
         print(node.notes)
-        node.get_pub_list("/id")
-        for pub in node.pub_topics:
-            print(pub)
+        if "Publisher" in node.notes:
+            node.get_pub_list("/id")
+            for pub in node.pub_topics:
+                print(pub)
