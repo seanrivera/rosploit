@@ -78,5 +78,8 @@ if __name__ == "__main__":
         print(node.notes)
         if "Publisher" in node.notes:
             node.get_pub_list("/id")
+            node.get_sub_list("/id")
             for pub in node.pub_topics:
                 print(pub)
+            for sub in node.sub_topics:
+                print(sub)
