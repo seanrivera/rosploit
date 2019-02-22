@@ -3,6 +3,7 @@ import json
 import socket
 import xmlrpc.client
 
+from core.exceptions import StateException
 from core.message import Message
 from core.topic import Topic
 
@@ -54,3 +55,23 @@ class Node:
                 self.sub_topics.append(Topic(topic_name=topic[0], message=message, protocol="TCPROS"))
         except xmlrpc.client.Fault as err:
             print(err)
+
+    def connect_to_pub(self, topic_name: str, node: Node):
+        """
+        Call this function to subscribe to one of the topics that this node publishes
+        :return:
+        """
+        target_topic = [x for x in self.pub_topics if x.name == topic_name]
+        if len(target_topic) > 0:
+            # TODO: Make less Hacky
+            if len(target_topic) < 2:
+                raise StateException("Node publishing the same topic twice. Error in list comprehension")
+            (status, _, info) = self.server.requestTopic(node.name, topic_name, [["TCPROS"]])
+            (proto, ip_addr, port) = info
+            new_topic = Topic(topic_name=target_topic[0].name, message=target_topic[0].message,
+                              protocol=target_topic[0].protocol)
+            new_topic.create_tcpros(direction="Subscribe", ip_addr=ip_addr, port=port)
+            node.sub_topics.append(new_topic)
+
+        else:
+            print("No such topic")
