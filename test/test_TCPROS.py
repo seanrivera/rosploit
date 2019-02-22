@@ -18,7 +18,8 @@ class TestTCPROS(TestCase):
         data = "hello"
         test_sub = TCPROS.publisher(message_definition=message_definition, caller_id=caller_id, topic=topic,
                                     md5sum=md5sum,
-                                    latching=latching, message_type=message_type, data=data)
+                                    latching=latching, message_type=message_type, data=data, port=0,
+                                    ip_addr="localhost")
         test_sub.create_header()
         print(test_sub.items.items())
         print(test_sub.header)
