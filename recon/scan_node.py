@@ -80,6 +80,8 @@ if __name__ == "__main__":
             node.get_pub_list("/id")
             node.get_sub_list("/id")
             for pub in node.pub_topics:
-                print(pub)
+                print(pub.name)
+                print(pub.md5_sum)
             for sub in node.sub_topics:
-                print(sub)
+                print(sub.name)
+                print(sub.md5_sum)

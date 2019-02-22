@@ -56,7 +56,7 @@ class Node:
         except xmlrpc.client.Fault as err:
             print(err)
 
-    def connect_to_pub(self, topic_name: str, node: Node):
+    def connect_to_pub(self, topic_name: str, node):
         """
         Call this function to subscribe to one of the topics that this node publishes
         :return:

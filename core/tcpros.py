@@ -24,7 +24,7 @@ class TCPROS:
         self.items = items
         self.port = port
         self.ip_addr = ip_addr
-        self.sock: socket = None
+        self.sock = None
 
     def __del__(self):
         if self.sock:
