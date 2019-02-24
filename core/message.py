@@ -6,6 +6,7 @@ from core.exceptions import StateException
 class Message:
     def __init__(self, msg_type: str):
         """
+        Wrapper code to integrate ros message
         :param msg_type: The name of the message
         """
         # TODO: THIS IS STILL CALLING ROS CODE

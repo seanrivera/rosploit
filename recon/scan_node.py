@@ -15,6 +15,13 @@ NMAP_DATA_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Node]:
+    """
+    Scan all of the ROS nodes for a given ip address and port range. Wraps nmap
+    :param ip_addr: IP address to scan
+    :param port_range: Port range to scan over
+    :param script_list: List of NSE scripts to execute.
+    :return:
+    """
     nm = nmap.PortScanner()
     print("Starting scan ip addr " + ip_addr + " ports " + port_range)
     DATA_DIR = NMAP_DATA_DIR.replace("\\", '\\\\')

@@ -27,10 +27,19 @@ class Node:
         self.sub_topics = []
 
     def to_json(self):
+        """
+        Convert the node to a json string
+        :return: a json string
+        """
         return json.dumps({"ip_addr": self.ip_addr, "port": self.port, "notes": self.notes}, sort_keys=True, indent=4)
 
     @classmethod
     def from_json(cls, o):
+        """
+        Create a node object from a json string
+        :param o: A JSON object
+        :return: A node object
+        """
         classdict = json.loads(o)
         cls.ip_addr = classdict['ip_addr']
         cls.port = classdict['port']
@@ -38,6 +47,11 @@ class Node:
         return cls(ip_addr=cls.ip_addr, port=cls.port, notes=cls.notes)
 
     def get_pub_list(self, node_name: str):
+        """
+        Update the local publisher list
+        :param node_name: Name of the requester to give to the node
+        :return: None
+        """
         try:
             (_, _, topic_list) = self.server.getPublications(node_name)
             for topic in topic_list:
@@ -48,6 +62,11 @@ class Node:
             print(err)
 
     def get_sub_list(self, node_name: str):
+        """
+        Update the local subscriber list
+        :param node_name: Name of the requester to give to the node
+        :return: None
+        """
         try:
             (_, _, topic_list) = self.server.getSubscriptions(node_name)
             for topic in topic_list:

@@ -16,6 +16,14 @@ class Topic:
         self.tcpros = None
 
     def create_tcpros(self, direction: str, ip_addr: str, port: int, caller_node=""):
+        """
+        Create  a TCPROS Connection
+        :param direction: The direction of the communcation Publish or Subscribe
+        :param ip_addr: IP address to connect to
+        :param port: Port to connect to
+        :param caller_node: Name of the node to give to the connection for the subscription
+        :return: None
+        """
         if "Publish" in direction:
             self.tcpros = TCPROS.publisher(message_definition=self.message, topic=self.name, md5sum=self.md5_sum,
                                            message_type=self.message_type, port=port, ip_addr=ip_addr)

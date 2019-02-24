@@ -5,6 +5,9 @@ import struct
 
 
 class TCPROS:
+    """
+    TCPROS reimplementation Object
+    """
     def __init__(self, connection_type="", message_definition="", caller_id="", service="", md5sum="", message_type="",
                  tcp_nodelay="0", topic="",
                  latching="0", persistent="0", error="", data="", ip_addr="", port=0, items=None):
