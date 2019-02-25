@@ -70,8 +70,13 @@ def rosploit():
                      replace_node,
                      mitm]
     while (True):
-        option = input("Select option:")
-        if type(option) is not int or option > len(function_list):
+        print_options()
+        option = int(input("Select option:"))
+        if option > len(function_list):
+            print(option) 
             print("Invalid Option")
         else:
             function_list[option - 1]()
+
+if __name__ == "__main__":
+    rosploit()
