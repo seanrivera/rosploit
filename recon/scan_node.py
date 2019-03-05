@@ -69,9 +69,9 @@ def scan_host(ip_addr: str, port_range: str, script_list: List[str]) -> List[Nod
                                                                                  'ros-node-id']:
                     for key, value in nm[ip_addr]['tcp'][port]['script'].items():
                         notes = notes + key + ":" + value + "\n"
-                    tempnode = Node(ip_addr=str(ip_addr), port=str(port), notes=notes)
-                    node_list.append(tempnode)
-                    # print(tempnode.notes)
+                    temp_node = Node(ip_addr=str(ip_addr), port=str(port), notes=notes)
+                    node_list.append(temp_node)
+                    # print(temp_node.notes)
         except Exception as inst:
             print("Node Creation Exception")
             raise inst

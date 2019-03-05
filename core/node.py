@@ -13,6 +13,8 @@ class Node:
         Defines a Ros node class, which allows a common structure for passing information about ros nodes
     """
 
+    server = None
+
     def __init__(self, ip_addr: str, port: str, notes: str = ''):
         try:
             socket.inet_aton(ip_addr)
@@ -25,6 +27,7 @@ class Node:
         self.server = xmlrpc.client.ServerProxy("http://" + self.ip_addr + ":" + self.port)
         self.pub_topics = []
         self.sub_topics = []
+        self.name = ""
 
     def to_json(self):
         """
@@ -40,10 +43,10 @@ class Node:
         :param o: A JSON object
         :return: A node object
         """
-        classdict = json.loads(o)
-        cls.ip_addr = classdict['ip_addr']
-        cls.port = classdict['port']
-        cls.notes = classdict['notes']
+        class_dict = json.loads(o)
+        cls.ip_addr = class_dict['ip_addr']
+        cls.port = class_dict['port']
+        cls.notes = class_dict['notes']
         return cls(ip_addr=cls.ip_addr, port=cls.port, notes=cls.notes)
 
     def get_pub_list(self, node_name: str):
@@ -94,3 +97,14 @@ class Node:
 
         else:
             print("No such topic")
+
+    def get_name(self, node_name: str):
+        """
+        Get the name of a node. Only works for python nodes.
+        :param node_name: Name of the requester.
+        :return: None
+        """
+        try:
+            self.server.getName(node_name)
+        except xmlrpc.client.Fault as err:
+            print(err)

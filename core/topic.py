@@ -1,10 +1,12 @@
+from typing import List
+
 from core.message import Message
 from core.tcpros import TCPROS
 
 
 class Topic:
     """
-        Define a Ros Topic class which allows for sharing infomation about topics
+        Define a Ros Topic class which allows for sharing information about topics
     """
 
     def __init__(self, topic_name: str, message: Message, protocol: str):
@@ -15,10 +17,22 @@ class Topic:
         self.protocol = protocol
         self.tcpros = None
 
+    @classmethod
+    def from_master(cls, topic_list: List[(str, str)]):
+        """
+        Create a node object from a master xml list
+        :param topic_list: A list of topics
+        :return: A list of topic objects
+        """
+        return_list = []
+        for topic in topic_list:
+            return_list.append(cls(topic_name=topic[0], message=Message(msg_type=topic[1]), protocol="TCPROS"))
+        return return_list
+
     def create_tcpros(self, direction: str, ip_addr: str, port: int, caller_node=""):
         """
         Create  a TCPROS Connection
-        :param direction: The direction of the communcation Publish or Subscribe
+        :param direction: The direction of the communication Publish or Subscribe
         :param ip_addr: IP address to connect to
         :param port: Port to connect to
         :param caller_node: Name of the node to give to the connection for the subscription

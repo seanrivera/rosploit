@@ -3,3 +3,4 @@ flask
 netifaces
 genpy
 python-nmap==0.6.1
+resource
