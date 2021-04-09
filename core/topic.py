@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from core.message import Message
 from core.tcpros import TCPROS
@@ -18,7 +18,7 @@ class Topic:
         self.tcpros = None
 
     @classmethod
-    def from_master(cls, topic_list: List[(str, str)]):
+    def from_master(cls, topic_list: List[Tuple[str, str]]):
         """
         Create a node object from a master xml list
         :param topic_list: A list of topics
